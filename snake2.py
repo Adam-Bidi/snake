@@ -26,7 +26,7 @@ screen.fill(white)
 
 snake = [(4,5),(5,5),(6,5)]
 direction = (1,0)
-fruit_x, fruit_y = randint(0,600), randint(0,600)
+fruit_x, fruit_y = randint(0,20), randint(0,20)
 
 while running:
     clock.tick(10)
@@ -39,7 +39,7 @@ while running:
             pg.draw.rect(screen, color, rect)
 
     first_x, first_y = snake[0]
-    (direction_x, direction_y) = direction
+    direction_x, direction_y = direction
     snake.pop()
     snake.insert(0, (first_x + direction_x, first_y + direction_y))
     
@@ -54,11 +54,10 @@ while running:
         pg.draw.rect(screen, red, rect)
 
     if snake[-1] == fruit:
-        fruit_x, fruit_y = randint(0,600), randint(0,600)
         snake.insert(0, (fruit_x, fruit_y))
+        fruit_x, fruit_y = randint(0,20), randint(0,20)
         
  
-
     # on itère sur tous les évênements qui ont eu lieu depuis le précédent appel
     # ici donc tous les évènements survenus durant la seconde précédente
     for event in pg.event.get():
