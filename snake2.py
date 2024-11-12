@@ -15,7 +15,15 @@ pg.init()
 screen = pg.display.set_mode((600, 600))
 clock = pg.time.Clock()
 
+score = 0
+pg.display.set_caption(f"Score: {score}")
 
+borders = []
+for k in range(0,600):
+    borders.append((k,-1))
+    borders.append((-1,k))
+    borders.append((601,k))
+    borders.append((k,601))
 
 # on rajoute une condition à la boucle: si on la passe à False le programme s'arrête
 running = True
@@ -68,6 +76,8 @@ while running:
     snake.pop()
     if (first_x + direction_x, first_y + direction_y) in snake:
         running = False
+    if (first_x + direction_x, first_y + direction_y) in borders:
+        running = False
     else :
         snake.appendleft((first_x + direction_x, first_y + direction_y))
     
@@ -81,8 +91,10 @@ while running:
 
         pg.draw.rect(screen, red, rect)
 
-    if snake[-1] == fruit:
-        snake.insert(0, (fruit_x, fruit_y))
+    if snake[0] == fruit:
+        snake.appendleft(fruit)
+        score += 1
+        pg.display.set_caption(f"Score: {score}")
         fruit_x, fruit_y = randint(0,20), randint(0,20)
         
  
