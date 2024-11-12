@@ -5,6 +5,7 @@ avec la touche 'q', ou avec la souris en fermant la fenêtre
 
 from random import randint
 import pygame as pg
+from collections import deque
 
 height = 40
 width = 40
@@ -23,12 +24,13 @@ black = (0,0,0)
 red = (255,0,0)
 green = (0,255,0)
 screen.fill(white)
-
-snake = [(4,5),(5,5),(6,5)]
-direction = (1,0)
+# conditions initiales
+snake = deque([(15,5),(16,5),(17,5)])
+direction = (-1,0)
 fruit_x, fruit_y = randint(0,20), randint(0,20)
 
 def handle_event(event):
+    global direction
     # chaque évênement à un type qui décrit la nature de l'évênement
     # un type de pg.QUIT signifie que l'on a cliqué sur la "croix" de la fenêtre
     if event.type == pg.QUIT:
@@ -39,31 +41,23 @@ def handle_event(event):
         if event.key == pg.K_q:
             running = False
         if event.key == pg.K_UP:
-            if (direction_x, direction_y)== (0,1):
-                pass
-            else :
+            if direction != (0,1):
                 direction = (0,-1)
         if event.key == pg.K_DOWN:
-            if direction == (0,-1):
-                pass
-            else :
+            if direction != (0,-1):
                 direction = (0,1)
         if event.key == pg.K_LEFT:
-            if direction == (1,0):
-                pass
-            else :
+            if direction != (1,0):
                 direction = (-1,0)
         if event.key == pg.K_RIGHT:
-            if direction == (-1,0):
-                pass
-            else :
+            if direction != (-1,0):
                 direction = (1,0)
 
 while running:
     clock.tick(10)
     screen.fill(white)
 
-    for x in range(width):
+    for x in range(width): # coloriage du damier
         for y in range(height):
             rect = pg.Rect(x * size, y * size, size, size)
             color = white if (x+y)%2 == 0 else black
@@ -75,7 +69,7 @@ while running:
     if (first_x + direction_x, first_y + direction_y) in snake:
         running = False
     else :
-        snake.insert(0, (first_x + direction_x, first_y + direction_y))
+        snake.appendleft((first_x + direction_x, first_y + direction_y))
     
    
     fruit = (fruit_x, fruit_y)
@@ -109,14 +103,5 @@ while running:
 # Cet appel va permettre à Pygame de "bien s'éteindre" et éviter des bugs sous Windows
 pg.quit()
 
-
-# les coordonnées du corps du serpent
-snake = [
-    (10, 15),
-    (11, 15),
-    (12, 15),
-]
-
-direction = (1,0)
 
 
