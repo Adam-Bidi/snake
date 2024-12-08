@@ -6,6 +6,7 @@ avec la touche 'q', ou avec la souris en fermant la fenêtre
 from random import randint
 import pygame as pg
 from collections import deque
+from collections import namedtuple
 
 height = 40
 width = 40
@@ -33,7 +34,9 @@ red = (255,0,0)
 green = (0,255,0)
 screen.fill(white)
 # conditions initiales
-snake = deque([(15,5),(16,5),(17,5)])
+
+cells = namedtuple('Coordonnées', ['abscisse', 'ordonnee'], rename = True)
+snake = deque([cells(15,5),cells(16,5),cells(17,5)])
 direction = (-1,0)
 fruit_x, fruit_y = randint(0,20), randint(0,20)
 
@@ -74,12 +77,12 @@ while running:
     first_x, first_y = snake[0]
     direction_x, direction_y = direction
     snake.pop()
-    if (first_x + direction_x, first_y + direction_y) in snake:
+    if cells(first_x + direction_x, first_y + direction_y) in snake:
         running = False
-    if (first_x + direction_x, first_y + direction_y) in borders:
+    if cells(first_x + direction_x, first_y + direction_y) in borders:
         running = False
     else :
-        snake.appendleft((first_x + direction_x, first_y + direction_y))
+        snake.appendleft(cells(first_x + direction_x, first_y + direction_y))
     
    
     fruit = (fruit_x, fruit_y)
@@ -92,7 +95,7 @@ while running:
         pg.draw.rect(screen, red, rect)
 
     if snake[0] == fruit:
-        snake.appendleft(fruit)
+        snake.appendleft(cells(fruit_x,fruit_y))
         score += 1
         pg.display.set_caption(f"Score: {score}")
         fruit_x, fruit_y = randint(0,20), randint(0,20)
